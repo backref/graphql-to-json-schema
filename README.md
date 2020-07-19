@@ -3,13 +3,19 @@
 Transform a GraphQL Schema introspection file to a valid JSON Schema.
 
 This package adds support for decorators improving the utility of GraphQL schema as an IDL for
-everything. The end goal is simple code generation without having to write directives.
+everything.
+
+The end goal is simple:
+
+    GraphQL -> JSON schema -> Javascript string templates -> Generated Code
+
+NO vendor-specific directives needed.
 
 ## Decorators
 
 Decorators, aka annotations or attributes in other languages, allows metadata to be attached to
-GraphQL schema entities. Decorators emit metadata in the resulting JSON schema. Nothing more. No
-plugin, declaration or registration is required.
+GraphQL schema entities. Decorators emit metadata in the resulting JSON schema. Nothing more.
+Utilities like code generators use the metadata as needed.
 
 The syntax is simple
 

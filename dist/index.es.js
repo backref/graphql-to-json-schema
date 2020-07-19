@@ -325,7 +325,12 @@ function parseGraphQL(text, filename) {
                     return [2, fromIntrospectionQuery(introspection.data)];
                 case 2:
                     err_1 = _a.sent();
-                    console.error(err_1);
+                    if (err_1.locations) {
+                        printErrors([err_1], filename || '');
+                    }
+                    else {
+                        console.error(err_1);
+                    }
                     throw err_1;
                 case 3: return [2];
             }

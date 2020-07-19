@@ -90,7 +90,11 @@ export async function parseGraphQL(text: string, filename?: string): Promise<any
 
     return fromIntrospectionQuery(introspection.data as IntrospectionQuery)
   } catch (err) {
-    console.error(err)
+    if (err.locations) {
+      printErrors([err], filename || '')
+    } else {
+      console.error(err)
+    }
     throw err
   }
 }

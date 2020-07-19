@@ -103,8 +103,12 @@ async function processFile(graphqlFilename, outputFilename, {dryRun, printHeader
 
     await writeFile(outputFilename, JSON.stringify(jsonSchema, null, 2))
   } catch (err) {
-    process.stderr.write(`grapqlFilename: ${graphqlFilename}`)
-    process.stderr.write(`outputFilename: ${outputFilename}`)
+    process.stderr.write('\n')
+    process.stderr.write(`grapqlFilename: ${graphqlFilename}\n`)
+    if (outputFilename) {
+      process.stderr.write(`outputFilename: ${outputFilename}\n`)
+    }
+    process.stderr.write('\n')
     throw err
   }
 }
