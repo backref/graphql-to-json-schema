@@ -57,44 +57,64 @@ Todo: {
 
 ## Usage
 
-CLI
+Run either
+
+    npm install -g @backref/graphql-to-json-schema
+
+Or
+
+    yarn global add @backref/graphql-to-json-schema
+
+To use the `gql2js` utility
 
 ```shell
 # output to STDOUT
-gq2js example/example.graphql
+gql2js example/example.graphql
 
 # output to file
-gq2js example/example.graphql -o example.json
+gql2js example/example.graphql -o example.json
 
 # output to idl directory (use single quotes)
-gq2js 'idl/**/*.graphql' -d idl
+gql2js 'idl/**/*.graphql' -d idl
 ```
 
 Programmatic
 
+```sh
+yarn add @backref/graphql-to-json-schema
+```
+
 ```javascript
 // node example
-const gq = require('graphql');
-const g2j = require('../dist');
-const fs = require('fs');
-const fp = require('path');
+const g2j = require('@backref/graphql-to-json-schema');
 
-const text = fs.readFileSync(fp.join(__dirname, 'example.graphql'), 'utf-8');
-const schema = gq.buildSchema(text);
-const introspection = gq.graphqlSync(schema, gq.getIntrospectionQuery()).data;
-const jsonSchema = g2j.fromIntrospectionQuery(introspection);
+const text = `
+type Todo {
+  """
+  The primary key.
+
+  +read_only()
+  +go_ident("ID")
+  +go_tag({"db": "id", "json": "id,omitempty"})
+  """
+  id: String!
+  name: String!
+  completed: Boolean
+}
+`;
+
+const jsonSchema = g2j.parseGraphQL(text);
 console.log(JSON.stringify(jsonSchema, null, 2));
 ```
 
 ## License
 
-This package is MIT licensed, following the license of the original body of
-work.
+This package is MIT licensed
 
 Original work by
 
 - [wittydeveloper](https://github.com/wittydeveloper/graphql-to-json-schema)
 
-with enhancements by
+Enhancements by
 
 - [aldeed](https://github.com/aldeed/graphql-to-json-schema)

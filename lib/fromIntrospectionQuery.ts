@@ -1,4 +1,5 @@
 import { IntrospectionQuery, IntrospectionType } from 'graphql';
+import * as gq from 'graphql';
 import { JSONSchema6 } from 'json-schema';
 import { includes, partition, reduce } from 'lodash';
 import { introspectionTypeReducer, JSONSchema6Acc } from './reducer';
@@ -69,3 +70,15 @@ export const fromIntrospectionQuery = (
     ),
   };
 };
+
+/**
+ * Parses GrapqhQL raw schema (SDL).
+ *
+ * @param text The raw schema text.
+ */
+export function parseGraphQL(text: string): any {
+  const schema = gq.buildSchema(text);
+  const introspection = gq.graphqlSync(schema, gq.getIntrospectionQuery())
+    .data as IntrospectionQuery;
+  return fromIntrospectionQuery(introspection);
+}

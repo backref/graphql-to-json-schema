@@ -12,3 +12,4 @@ export interface FromIntrospectionQueryOptions {
     ignoreInternals?: boolean;
 }
 export declare const fromIntrospectionQuery: (introspection: IntrospectionQuery, opts?: FromIntrospectionQueryOptions | undefined) => JSONSchema6;
+export declare function parseGraphQL(text: string): any;
