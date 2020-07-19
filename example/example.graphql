@@ -1,0 +1,24 @@
+"""
++package("gqidl")
++namespace("github.com/backref/graphql-2-json-schema")
+"""
+scalar idl
+
+type Todo {
+  """
+  +go_ident("ID")
+  +go_tag({"db": "id", "json": "id,omitempty"})
+  """
+  id: Int!
+  name: String!
+  completed: Boolean
+}
+
+# root Query is required by graphql parser
+type Query {
+  _: Boolean
+}
+
+type Mutation {
+  update_todo(id: Int): Todo
+}

@@ -1,180 +1,87 @@
-# GraphQL Schema to JSON Schema [![npm version](https://badge.fury.io/js/graphql-2-json-schema.svg)](https://badge.fury.io/js/graphql-2-json-schema)
-
-`graphql-2-json-schema` package
-
------------
+# graphql-2-json-schema
 
 Transform a GraphQL Schema introspection file to a valid JSON Schema.
 
-## Usage
+This package adds support for decorators improving the utility of GraphQL schema
+as an IDL for everything.
 
-```ts
-import {
-    graphqlSync,
-    introspectionQuery,
-    IntrospectionQuery
-} from 'graphql';
-import { fromIntrospectionQuery } from 'graphql-2-json-schema';
+## Decorators
 
-// schema is your GraphQL schema.
+Decorator rules
 
-const introspection = graphqlSync(schema, introspectionQuery).data as IntrospectionQuery;
+- MUST be within a quotes `""` comment or docstring
+- MUST be on its own line
+- MUST be preceeded by a `+` symbol to disambiguate against `@` directives
+- MUST have valid JSON value within parentheses. An empty parentheses `()`
+  is converted to boolean value of `true`.
 
-const result = fromIntrospectionQuery(introspection);
-```
-
-## Example
-
-
-### Input
+Decorators in GraphQL schema
 
 ```graphql
 type Todo {
-    id: String!
-    name: String!
-    completed: Boolean
-    color: Color
-}
+  """
+  The primary key.
 
-input TodoInputType {
-    name: String!
-    completed: Boolean
-    color: Color
-}
-
-enum Color {
-  "Red color"
-  RED
-  "Green color"
-  GREEN
-}
-
-type Query {
-    todo(id: String!): Todo
-    todos: [Todo]
-}
-
-type Mutation {
-    update_todo(id: String!, todo: TodoInputType!): Todo
-    create_todo(todo: TodoInputType!): Todo
+  +read_only()
+  +go_ident("ID")
+  +go_tag({"db": "id", "json": "id,omitempty"})
+  """
+  id: String!
+  name: String!
+  completed: Boolean
 }
 ```
 
-### Output
+The result JSON schema is enriched with `__decorators` props for use by
+code generators.
 
 ```js
-{
-    $schema: 'http://json-schema.org/draft-06/schema#',
+Todo: {
+    type: 'object',
     properties: {
-        Query: {
-            type: 'object',
-            properties: {
-                todo: {
-                    type: 'object',
-                    properties: {
-                        arguments: {
-                            type: 'object',
-                            properties: {
-                                id: { type: 'string' }
-                            },
-                            required: ['id']
-                        },
-                        return: {
-                            $ref: '#/definitions/Todo'
-                        }
-                    },
-                    required: []
-                },
-                todos: {
-                    type: 'object',
-                    properties: {
-                        arguments: {
-                            type: 'object',
-                            properties: {},
-                            required: []
-                        },
-                        return: {
-                            type: 'array',
-                            items: { $ref: '#/definitions/Todo' }
-                        }
-                    },
-                    required: []
-                }
+        id: {
+            __decorators: {
+                go_ident: "ID",
+                go_tag: {db:"id", json: "id,omitempty"},
+                read_only: true
             },
-            required: []
+            description: 'The primary key',
+            type: 'string'
         },
-        Mutation: {
-            type: 'object',
-            properties: {
-                update_todo: {
-                    type: 'object',
-                    properties: {
-                        arguments: {
-                            type: 'object',
-                            properties: {
-                                id: { type: 'string' },
-                                todo: { $ref: '#/definitions/TodoInputType' }
-                            },
-                            required: ['id', 'todo']
-                        },
-                        return: {
-                            $ref: '#/definitions/Todo'
-                        }
-                    },
-                    required: []
-                },
-                create_todo: {
-                    type: 'object',
-                    properties: {
-                        arguments: {
-                            type: 'object',
-                            properties: {
-                                todo: { $ref: '#/definitions/TodoInputType' }
-                            },
-                            required: ['todo']
-                        },
-                        return: {
-                            $ref: '#/definitions/Todo'
-                        }
-                    },
-                    required: []
-                }
-            }
-        },
+        name: { type: 'string' },
+        completed: { type: 'boolean' },
     },
-    definitions: {
-        'Todo': {
-            type: 'object',
-            properties: {
-                id: { type: 'string' },
-                name: { type: 'string' },
-                completed: { type: 'boolean' },
-                color: { $ref: '#/definitions/Color' },
-            },
-            required: ['id', 'name']
-        },
-        'Color': {
-            type: 'string',
-            anyOf: [
-                {
-                    enum: ['RED'],
-                    title: 'Red color',
-                },
-                {
-                    enum: ['GREEN'],
-                    title: 'Green color',
-                }
-            ]
-        },
-        'TodoInputType': {
-            type: 'object',
-            properties: {
-                name: { type: 'string' },
-                completed: { type: 'boolean' },
-                color: { $ref: '#/definitions/Color' },
-            },
-            required: ['name']
-        }
-    }
-}
+    required: ['id', 'name']
+},
 ```
+
+## Usage
+
+Programmatic
+
+```javascript
+// node example
+const gq = require('graphql');
+const g2j = require('../dist');
+const fs = require('fs');
+const fp = require('path');
+
+const text = fs.readFileSync(fp.join(__dirname, 'example.graphql'), 'utf-8');
+const schema = gq.buildSchema(text);
+const introspection = gq.graphqlSync(schema, gq.getIntrospectionQuery()).data;
+const jsonSchema = g2j.fromIntrospectionQuery(introspection);
+console.log(JSON.stringify(jsonSchema, null, 2));
+```
+
+## License
+
+This package is MIT licensed, following the license of the original body of
+work.
+
+Original work by
+
+- [wittydeveloper](https://github.com/wittydeveloper/graphql-to-json-schema)
+
+with enhancements by
+
+- [aldeed](https://github.com/aldeed/graphql-to-json-schema)

@@ -1,31 +1,37 @@
 {
-  "name": "graphql-2-json-schema",
-  "version": "0.2.0",
+  "name": "@backref/graphql-2-json-schema",
+  "version": "0.3.0",
   "main": "dist/index.js",
-  "repository": "git@github.com:wittydeveloper/graphql-to-json-schema.git",
-  "author": "Charly POLY <cpoly55@gmail.com>",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.bundle.js",
+  "repository": "https://github.com/backref/graphql-to-json-schema.git",
+  "author": "Mario L Gutierrez<32134+mgutz@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
     "functional-json-schema": "0.0.2-3",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.19"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "npx rollup -c"
   },
   "devDependencies": {
     "@types/ajv": "^1.0.0",
-    "@types/graphql": "^0.13.1",
-    "@types/jest": "^22.2.3",
-    "@types/json-schema": "^6.0.1",
+    "@types/graphql": "^14.5.0",
+    "@types/jest": "^26.0.4",
+    "@types/json-schema": "^7.0.5",
     "@types/lodash": "^4.14.108",
-    "@types/node": "^10.1.4",
+    "@types/node": "^14.0.23",
     "ajv": "^6.5.0",
-    "graphql": "^0.13.2",
-    "jest": "^22.4.4",
-    "standard-version": "^4.3.0",
-    "ts-jest": "^22.4.6",
-    "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "graphql": "^15.3.0",
+    "jest": "^26.1.0",
+    "rollup": "^2.22.1",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "standard-version": "^8.0.2",
+    "ts-jest": "^26.1.3",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.7"
   },
   "jest": {
     "transform": {
@@ -33,6 +39,9 @@
     },
     "testURL": "http://localhost/",
     "testRegex": "(/__tests__/([^\\.d]*)|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "modulePathIgnorePatterns": [
+      "./__tests__/fixtures"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",

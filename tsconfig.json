@@ -1,12 +1,15 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "declaration": true,
-        "outDir": "./dist",
-        "rootDir": "."
-    }
+  "compilerOptions": {
+    "module": "es2015",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "esModuleInterop": true
+  },
+  "include": ["index.ts", "lib", "example"],
+  "exclude": ["node_modules", "dist"]
 }
