@@ -41,7 +41,7 @@ async function handler(source, flags) {
     let dryRun = flags.dryRun;
 
     if (paths.length === 0) {
-      console.error(`No files found matching: ${sources}`);
+      process.stderr.write(`No files found matching: ${sources}`);
       process.exit(1);
     }
 
@@ -49,10 +49,9 @@ async function handler(source, flags) {
       let outputFile = flags.output;
       if (!outputFile) {
         dryRun = true;
-        outputFile = '(console)';
       }
       const path = paths[0];
-      await processFile(path, outputFile, dryRun);
+      await processFile(path, outputFile, { dryRun, printHeader: false });
       return;
     }
 
@@ -74,21 +73,35 @@ async function handler(source, flags) {
       const newFilename = fp.basename(path, fp.extname(path)) + '.json';
       const outputFile = fp.join(outputDir, ...parts.slice(1), newFilename);
       await mkdirp(fp.dirname(outputFile));
-      await processFile(path, outputFile, flags.dryRun);
+      await processFile(path, outputFile, {
+        dryRun: flags.dryRun,
+        printHeader: true,
+      });
     }
   } catch (err) {
-    console.error(err.message);
-    console.error(err.stack);
+    process.stderr.write(err.message);
+    process.stderr.write(err.stack);
     process.exit(1);
   }
 }
 
-async function processFile(graphqlFilename, outputFilename, dryRun) {
+async function processFile(
+  graphqlFilename,
+  outputFilename,
+  { dryRun, printHeader }
+) {
   try {
     const jsonSchema = await tranformGraphqQLFile(graphqlFilename);
 
     if (dryRun) {
-      process.stdout.write(`// ---------- ${outputFilename}\n`);
+      if (printHeader) {
+        process.stdout.write(`\n`);
+        process.stdout.write(`// ----------------------------------------\n`);
+        process.stdout.write(`// input:  ${graphqlFilename}\n`);
+        process.stdout.write(`// output: ${outputFilename}\n`);
+        process.stdout.write(`// ----------------------------------------\n`);
+        process.stdout.write(`\n`);
+      }
       process.stdout.write(JSON.stringify(jsonSchema, null, 2));
       process.stdout.write('\n');
       return;
@@ -96,8 +109,8 @@ async function processFile(graphqlFilename, outputFilename, dryRun) {
 
     await writeFile(outputFilename, JSON.stringify(jsonSchema, null, 2));
   } catch (err) {
-    console.error(`grapqlFilename: ${graphqlFilename}`);
-    console.error(`outputFilename: ${outputFilename}`);
+    process.stderr.write(`grapqlFilename: ${graphqlFilename}`);
+    process.stderr.write(`outputFilename: ${outputFilename}`);
     throw err;
   }
 }
