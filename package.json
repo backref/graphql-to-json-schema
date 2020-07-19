@@ -1,6 +1,6 @@
 {
   "name": "@backref/graphql-to-json-schema",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "browser": "dist/index.bundle.js",
