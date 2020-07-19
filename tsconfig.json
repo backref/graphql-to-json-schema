@@ -9,8 +9,10 @@
     "outDir": "./dist",
     "rootDir": ".",
     "esModuleInterop": true,
-    "newLine": "lf"
+    "newLine": "lf",
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   },
-  "include": ["index.ts", "lib", "example"],
+  "include": ["index.ts", "lib", "example", "bin"],
   "exclude": ["node_modules", "dist"]
 }

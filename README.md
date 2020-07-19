@@ -9,7 +9,7 @@ as an IDL for everything.
 
 Decorator rules
 
-- MUST be within a quotes `""` comment or docstring
+- MUST be within a quotes `""` description or docstring
 - MUST be on its own line
 - MUST be preceeded by a `+` symbol to disambiguate against `@` directives
 - MUST have valid JSON value within parentheses. An empty parentheses `()`
@@ -52,10 +52,23 @@ Todo: {
         completed: { type: 'boolean' },
     },
     required: ['id', 'name']
-},
+}
 ```
 
 ## Usage
+
+CLI
+
+```shell
+# output to STDOUT
+gq2js example/example.graphql
+
+# output to file
+gq2js example/example.graphql -o example.json
+
+# output to idl directory (use single quotes)
+gq2js 'idl/**/*.graphql' -d idl
+```
 
 Programmatic
 

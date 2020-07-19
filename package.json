@@ -7,9 +7,14 @@
   "repository": "https://github.com/backref/graphql-to-json-schema.git",
   "author": "Mario L Gutierrez<32134+mgutz@users.noreply.github.com>",
   "license": "MIT",
+  "bin": {
+    "gql2js": "bin/gql2js.js"
+  },
   "dependencies": {
+    "@types/commander": "^2.12.2",
     "functional-json-schema": "0.0.2-3",
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.19",
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "test": "jest",
@@ -23,8 +28,11 @@
     "@types/lodash": "^4.14.108",
     "@types/node": "^14.0.23",
     "ajv": "^6.5.0",
+    "commander": "^5.1.0",
+    "globby": "^11.0.1",
     "graphql": "^15.3.0",
     "jest": "^26.1.0",
+    "make-dir": "^3.1.0",
     "rollup": "^2.22.1",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript2": "^0.27.1",
