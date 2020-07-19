@@ -4,13 +4,13 @@ import {
   graphqlSync,
   getIntrospectionQuery,
   IntrospectionQuery,
-} from 'graphql';
-import { JSONSchema6 } from 'json-schema';
+} from 'graphql'
+import {JSONSchema6} from 'json-schema'
 
 type GetTodoSchemaIntrospectionResult = {
-  schema: GraphQLSchema;
-  introspection: IntrospectionQuery;
-};
+  schema: GraphQLSchema
+  introspection: IntrospectionQuery
+}
 export const getTodoSchemaIntrospection = (): GetTodoSchemaIntrospectionResult => {
   const schema = buildSchema(`
         """
@@ -103,14 +103,14 @@ export const getTodoSchemaIntrospection = (): GetTodoSchemaIntrospectionResult =
             update_todo(id: String!, todo: TodoInputType!): Todo
             create_todo(todo: TodoInputType!): Todo
         }
-`);
+`)
 
-  const result = graphqlSync(schema, getIntrospectionQuery());
+  const result = graphqlSync(schema, getIntrospectionQuery())
   return {
     introspection: result.data as IntrospectionQuery,
     schema,
-  };
-};
+  }
+}
 
 export const todoSchemaAsJsonSchema: JSONSchema6 = {
   $schema: 'http://json-schema.org/draft-06/schema#',
@@ -187,7 +187,7 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
             },
             return: {
               type: 'array',
-              items: { $ref: '#/definitions/Todo' },
+              items: {$ref: '#/definitions/Todo'},
             },
           },
           required: [],
@@ -209,8 +209,8 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
             arguments: {
               type: 'object',
               properties: {
-                id: { type: 'string', $ref: '#/definitions/String' },
-                todo: { $ref: '#/definitions/TodoInputType' },
+                id: {type: 'string', $ref: '#/definitions/String'},
+                todo: {$ref: '#/definitions/TodoInputType'},
               },
               required: ['id', 'todo'],
             },
@@ -226,7 +226,7 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
             arguments: {
               type: 'object',
               properties: {
-                todo: { $ref: '#/definitions/TodoInputType' },
+                todo: {$ref: '#/definitions/TodoInputType'},
               },
               required: ['todo'],
             },
@@ -267,7 +267,7 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
           $ref: '#/definitions/String',
           // @ts-ignore
           __decorators: {
-            go_tag: { db: 'primary_key' },
+            go_tag: {db: 'primary_key'},
           },
         },
       },
@@ -282,14 +282,14 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
           description: 'A unique identifier',
           $ref: '#/definitions/String',
         },
-        name: { type: 'string', $ref: '#/definitions/String' },
-        completed: { type: 'boolean', $ref: '#/definitions/Boolean' },
-        color: { $ref: '#/definitions/Color' },
+        name: {type: 'string', $ref: '#/definitions/String'},
+        completed: {type: 'boolean', $ref: '#/definitions/Boolean'},
+        color: {$ref: '#/definitions/Color'},
         addedAt: {
           $ref: '#/definitions/DateTime',
           // @ts-ignore
           __decorators: {
-            go_tag: { json: 'added_at,omitempty', db: 'added_at' },
+            go_tag: {json: 'added_at,omitempty', db: 'added_at'},
           },
         },
       },
@@ -325,7 +325,7 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
       },
       type: 'object',
       description: 'Example union',
-      anyOf: [{ $ref: '#/definitions/Todo' }],
+      anyOf: [{$ref: '#/definitions/Todo'}],
     },
     TodoInputType: {
       type: 'object',
@@ -336,10 +336,10 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
           type: 'string',
           $ref: '#/definitions/String',
           // @ts-ignore
-          __decorators: { pk: true },
+          __decorators: {pk: true},
         },
-        completed: { type: 'boolean', $ref: '#/definitions/Boolean' },
-        color: { $ref: '#/definitions/Color' },
+        completed: {type: 'boolean', $ref: '#/definitions/Boolean'},
+        color: {$ref: '#/definitions/Color'},
       },
       required: ['name'],
     },
@@ -355,4 +355,4 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
       type: 'object',
     },
   },
-};
+}

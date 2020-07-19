@@ -4,13 +4,13 @@ import {
   graphqlSync,
   getIntrospectionQuery,
   IntrospectionQuery,
-} from 'graphql';
-import { JSONSchema6 } from 'json-schema';
+} from 'graphql'
+import {JSONSchema6} from 'json-schema'
 
 type GetTodoSchemaIntrospectionResult = {
-  schema: GraphQLSchema;
-  introspection: IntrospectionQuery;
-};
+  schema: GraphQLSchema
+  introspection: IntrospectionQuery
+}
 export const getTodoSchemaIntrospection = (): GetTodoSchemaIntrospectionResult => {
   const schema = buildSchema(`
         "Anything with an ID can be a node"
@@ -72,14 +72,14 @@ export const getTodoSchemaIntrospection = (): GetTodoSchemaIntrospectionResult =
             update_todo(id: String!, todo: TodoInputType!): Todo
             create_todo(todo: TodoInputType!): Todo
         }
-`);
+`)
 
-  const result = graphqlSync(schema, getIntrospectionQuery());
+  const result = graphqlSync(schema, getIntrospectionQuery())
   return {
     introspection: result.data as IntrospectionQuery,
     schema,
-  };
-};
+  }
+}
 
 export const todoSchemaAsJsonSchema: JSONSchema6 = {
   $schema: 'http://json-schema.org/draft-06/schema#',
@@ -151,7 +151,7 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
             },
             return: {
               type: 'array',
-              items: { $ref: '#/definitions/Todo' },
+              items: {$ref: '#/definitions/Todo'},
             },
           },
           required: [],
@@ -168,8 +168,8 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
             arguments: {
               type: 'object',
               properties: {
-                id: { type: 'string', $ref: '#/definitions/String' },
-                todo: { $ref: '#/definitions/TodoInputType' },
+                id: {type: 'string', $ref: '#/definitions/String'},
+                todo: {$ref: '#/definitions/TodoInputType'},
               },
               required: ['id', 'todo'],
             },
@@ -185,7 +185,7 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
             arguments: {
               type: 'object',
               properties: {
-                todo: { $ref: '#/definitions/TodoInputType' },
+                todo: {$ref: '#/definitions/TodoInputType'},
               },
               required: ['todo'],
             },
@@ -237,10 +237,10 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
           description: 'A unique identifier',
           $ref: '#/definitions/String',
         },
-        name: { type: 'string', $ref: '#/definitions/String' },
-        completed: { type: 'boolean', $ref: '#/definitions/Boolean' },
-        color: { $ref: '#/definitions/Color' },
-        addedAt: { $ref: '#/definitions/DateTime' },
+        name: {type: 'string', $ref: '#/definitions/String'},
+        completed: {type: 'boolean', $ref: '#/definitions/Boolean'},
+        color: {$ref: '#/definitions/Color'},
+        addedAt: {$ref: '#/definitions/DateTime'},
       },
       required: ['id', 'name'],
     },
@@ -262,18 +262,18 @@ export const todoSchemaAsJsonSchema: JSONSchema6 = {
     TodoAndMore: {
       type: 'object',
       description: 'Example union',
-      anyOf: [{ $ref: '#/definitions/Todo' }],
+      anyOf: [{$ref: '#/definitions/Todo'}],
     },
     TodoInputType: {
       type: 'object',
       description:
         'A type that describes ToDoInputType. Its description might not\nfit within the bounds of 80 width and so you want MULTILINE',
       properties: {
-        name: { type: 'string', $ref: '#/definitions/String' },
-        completed: { type: 'boolean', $ref: '#/definitions/Boolean' },
-        color: { $ref: '#/definitions/Color' },
+        name: {type: 'string', $ref: '#/definitions/String'},
+        completed: {type: 'boolean', $ref: '#/definitions/Boolean'},
+        color: {$ref: '#/definitions/Color'},
       },
       required: ['name'],
     },
   },
-};
+}

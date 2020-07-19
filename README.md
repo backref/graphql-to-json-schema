@@ -2,15 +2,14 @@
 
 Transform a GraphQL Schema introspection file to a valid JSON Schema.
 
-This package adds support for decorators improving the utility of GraphQL schema
-as an IDL for everything.
+This package adds support for decorators improving the utility of GraphQL schema as an IDL for
+everything. The end goal is simple code generation without having to write directives.
 
 ## Decorators
 
-Decorators, aka annotations or attributes in other languages, allows
-metadata to be attached to GraphQL schema entities. The decorator metadata
-appear as properties in the resulting JSON schema. Decorator metadata can be
-used for validations, ACL roles, code generation, form generation ...
+Decorators, aka annotations or attributes in other languages, allows metadata to be attached to
+GraphQL schema entities. Decorators emit metadata in the resulting JSON schema. Nothing more. No
+plugin, declaration or registration is required.
 
 The syntax is simple
 
@@ -34,32 +33,32 @@ The syntax is simple
 
 Decorator rules
 
-- MUST be within a quotes `""` description or docstring
-- MUST be on its own line
-- MUST be preceeded by a `+` symbol to disambiguate against `@` directives
-- MUST have valid JSON value within parentheses. An empty parentheses `()`
-  is converted to boolean value of `true`.
+-   MUST be within a quotes `""` description or docstring
+-   MUST be on its own line
+-   MUST be preceeded by a `+` symbol to disambiguate against `@` directives
+-   MUST have valid JSON value within parentheses. An empty parentheses `()` is converted to boolean
+    value of `true`.
 
 Decorators example in GraphQL schema
 
 ```graphql
 type Todo {
-  """
-  The primary key.
+    """
+    The primary key.
 
-  +read_only()
-  +go_ident("ID")
-  +go_tag({"db": "id", "json": "id,omitempty"})
-  """
-  id: String!
-  name: String!
-  completed: Boolean
+    +read_only()
+    +go_ident("ID")
+    +go_tag({"db": "id", "json": "id,omitempty"})
+    """
+    id: String!
+    name: String!
+    completed: Boolean
 }
 ```
 
 The result JSON schema is enriched with `__decorators` property
 
-```js
+```javascript
 Todo: {
     type: 'object',
     properties: {
@@ -103,7 +102,7 @@ gql2js example/example.graphql -o example.json
 gql2js 'example/**/*.graphql' -d _temp
 ```
 
-Programmatic
+Programmatic, see [example](example/index.js)
 
 ```sh
 yarn add @backref/graphql-to-json-schema
@@ -111,7 +110,7 @@ yarn add @backref/graphql-to-json-schema
 
 ```javascript
 // node example
-const g2j = require('@backref/graphql-to-json-schema');
+const g2j = require('@backref/graphql-to-json-schema')
 
 const text = `
 type Todo {
@@ -126,10 +125,10 @@ type Todo {
   name: String!
   completed: Boolean
 }
-`;
+`
 
-const jsonSchema = g2j.parseGraphQL(text);
-console.log(JSON.stringify(jsonSchema, null, 2));
+const jsonSchema = await g2j.parseGraphQL(text)
+console.log(JSON.stringify(jsonSchema, null, 2))
 ```
 
 ## License
@@ -138,8 +137,8 @@ This package is MIT licensed
 
 Original work by
 
-- [wittydeveloper](https://github.com/wittydeveloper/graphql-to-json-schema)
+-   [wittydeveloper](https://github.com/wittydeveloper/graphql-to-json-schema)
 
 Enhancements by
 
-- [aldeed](https://github.com/aldeed/graphql-to-json-schema)
+-   [aldeed](https://github.com/aldeed/graphql-to-json-schema)
