@@ -7,6 +7,31 @@ as an IDL for everything.
 
 ## Decorators
 
+Decorators, aka annotations or attributes in other languages, allows
+metadata to be attached to GraphQL schema entities. The decorator metadata
+appear as properties in the resulting JSON schema. Decorator metadata can be
+used for validations, ACL roles, code generation, form generation ...
+
+The syntax is simple
+
+```shell
+# decorator with map value
++go_tag({"json": "id", "db": "id"})
+
+# truthy decorator, empty parens default to true
++read_only()
++read_only(false)
+
+# array
++acl_roles(["session", "admin"])
+
+# string
++go_ident("ID")
+
+# number (int, float, etc)
++form_pos(1)
+```
+
 Decorator rules
 
 - MUST be within a quotes `""` description or docstring
@@ -15,7 +40,7 @@ Decorator rules
 - MUST have valid JSON value within parentheses. An empty parentheses `()`
   is converted to boolean value of `true`.
 
-Decorators in GraphQL schema
+Decorators example in GraphQL schema
 
 ```graphql
 type Todo {
@@ -32,8 +57,7 @@ type Todo {
 }
 ```
 
-The result JSON schema is enriched with `__decorators` props for use by
-code generators.
+The result JSON schema is enriched with `__decorators` property
 
 ```js
 Todo: {
@@ -57,15 +81,16 @@ Todo: {
 
 ## Usage
 
-Run either
+To use the `gql2js` CLI utility, first install the package
 
-    npm install -g @backref/graphql-to-json-schema
+```sh
+yarn global add @backref/graphql-to-json-schema
 
-Or
+# OR
+npm install -g @backref/graphql-to-json-schema
+```
 
-    yarn global add @backref/graphql-to-json-schema
-
-To use the `gql2js` utility
+Running the utility
 
 ```shell
 # output to STDOUT
@@ -74,8 +99,8 @@ gql2js example/example.graphql
 # output to file
 gql2js example/example.graphql -o example.json
 
-# output to idl directory (use single quotes)
-gql2js 'idl/**/*.graphql' -d idl
+# output to directory (use single quotes)
+gql2js 'example/**/*.graphql' -d _temp
 ```
 
 Programmatic
